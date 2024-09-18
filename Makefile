@@ -1,12 +1,12 @@
 .PHONY = clean
 CC = g++
 INCLUDE_DIR = ./include
-OBJ_DIR = obj
-BIN_DIR = bin
-SRC_DIR = src
-LIB_DIR = libs
-TEST_DIR = tests
-THIRD_PARTY_DIR = third_party
+OBJ_DIR = ./obj
+BIN_DIR = ./bin
+SRC_DIR = ./src
+LIB_DIR = ./libs
+TEST_DIR = ./tests
+THIRD_PARTY_DIR = ./third_party
 TARGET = $(BIN_DIR)/encryption
 CFLAGS =  -Wall -g -std=c++17 -I $(INCLUDE_DIR)
 DEBUGFLAGS = -O0 -D _DEBUG
@@ -17,15 +17,15 @@ ifeq ($(MODE),release)
 endif
 
 SRC = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
-$(info $(OBJS))
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, %.o, $(wildcard $(SRC_DIR)/*.cpp))
 all: $(TARGET)
-
+$(info $(OBJS))
 $(TARGET): $(OBJS)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $(patsubst %.o, $(OBJ_DIR)/%.o, $^)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p obj
+	$(CC) $(CFLAGS) -c $< $(DEBUGFLAGS) -o $(OBJ_DIR)/$@
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR) $(LIB_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR) 
