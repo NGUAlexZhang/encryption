@@ -15,7 +15,7 @@ int main(){
     std::cout << binStr << std::endl;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 7; j++)
-            std::cout << binStr[boxes::key_box[i][j] - 1];
+            std::cout << binStr[boxes::displacement_box1[i][j] - 1];
     }
     return 0;
 }
